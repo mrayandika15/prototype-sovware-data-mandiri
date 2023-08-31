@@ -1,7 +1,22 @@
+import { Box } from "@mui/material";
 import React from "react";
+import Searchbar from "../components/searchbar/searchbar";
+
+import ClassTable from "../features/monitor/component/class-table/class-table";
 
 const MonitorPage = () => {
-  return <div>MonitorPage</div>;
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "25px",
+      }}
+    >
+      <Searchbar />
+      <ClassTable />
+    </Box>
+  );
 };
 
 export default MonitorPage;
