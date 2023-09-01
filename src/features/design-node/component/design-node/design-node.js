@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import React, { useCallback } from "react";
 import ReactFlow, {
   useNodesState,
@@ -13,6 +13,7 @@ import { useDesignNodeContetext } from "../../context/design-node-context";
 import DesignProcessor from "../design-class/design-processor";
 import DesignCloud from "../design-class/design-cloud";
 import DesignFunnel from "../design-class/design-funnel";
+import DesignActionNode from "./design-action-node";
 
 const nodeTypes = {
   processorNode: DesignProcessor,
@@ -30,7 +31,11 @@ const DesignNode = () => {
     edges,
     setEdges,
     setNodes,
+    setConnectAction,
+    connectAction,
   } = useDesignNodeContetext();
+
+  const connectionModal = connectAction?.state || false;
 
   return (
     <Box
@@ -46,6 +51,15 @@ const DesignNode = () => {
       >
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
+      <DesignActionNode
+        open={connectionModal}
+        onClose={() => {
+          setConnectAction({
+            ...connectAction,
+            state: false,
+          });
+        }}
+      />
     </Box>
   );
 };

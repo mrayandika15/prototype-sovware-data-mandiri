@@ -45,10 +45,6 @@ const Node = ({ data, isConnectable, src, type }) => {
         position={Position.Bottom}
         id={`${type}Node-source-c`}
         isConnectable={isConnectable}
-        isValidConnection={(connection) => {
-          console.log(connection);
-          return true;
-        }}
       />
     </Box>
   );

@@ -75,11 +75,13 @@ const DesignNodeProcessorList = () => {
           variant="contained"
           disabled={!selectedItem}
           sx={{
-            backgroundColor: "#F5F5F5",
-            color: "#828282",
-            ":hover": {
-              backgroundColor: "#F5F5F5",
-            },
+            width: "100%",
+            height: "40px",
+            background: "#2D9CDB",
+            color: "#fff",
+            borderRadius: "10px",
+            fontSize: "14px",
+            fontWeight: "bold",
           }}
         >
           Add Processor

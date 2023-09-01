@@ -9,16 +9,34 @@ const DesignNodeContext = ({ children }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [openProcessorList, setOpenProcessorList] = React.useState(false);
+  const [connectAction, setConnectAction] = React.useState({
+    state: false,
+  });
+
+  const isValidConnection = (source, target) => {
+    return true;
+  };
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => {
+      const { source, target } = params;
+
+      if (!isValidConnection(source, target)) {
+        return;
+      }
+
+      setConnectAction({
+        params: { ...params },
+        state: true,
+      });
+    },
     [setEdges]
   );
 
   const onAdd = useCallback(
     ({ label, type }) => {
       const newNode = {
-        id: getNodeId(),
+        id: type + getNodeId(),
         type: type,
         data: {
           label: label,
@@ -44,6 +62,8 @@ const DesignNodeContext = ({ children }) => {
         onEdgesChange,
         onConnect,
         onAdd,
+        connectAction,
+        setConnectAction,
         processorListState: { openProcessorList, setOpenProcessorList },
       }}
     >
@@ -69,6 +89,8 @@ export const useDesignNodeContetext = () => {
     onEdgesChange,
     onConnect,
     onAdd,
+    connectAction,
+    setConnectAction,
     processorListState: { openProcessorList, setOpenProcessorList },
   } = context;
 
@@ -81,6 +103,8 @@ export const useDesignNodeContetext = () => {
     onEdgesChange,
     onConnect,
     onAdd,
+    connectAction,
+    setConnectAction,
     processorListState: { openProcessorList, setOpenProcessorList },
   };
 };
