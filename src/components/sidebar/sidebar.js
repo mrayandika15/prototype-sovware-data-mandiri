@@ -3,9 +3,15 @@ import React from "react";
 import ButtonIconSidebar from "./button-icon-sidebar";
 import UserIconSidebar from "./user-icon-sidebar";
 import ExpandBox from "./expand-box";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ state }) => {
   const { isActive, setIsActive } = state;
+
+  const navigation = useNavigate();
+  const pathname = useLocation().pathname;
+
+  console.log(pathname);
 
   return (
     <Drawer
@@ -64,15 +70,26 @@ const Sidebar = ({ state }) => {
           }}
         >
           <ButtonIconSidebar
-            isActive
+            isActive={pathname === "/"}
             isExpand={isActive}
             label="Monitor"
-            src="./assets/icons/icon-dashboard-fill.svg"
+            src={`${
+              pathname === "/"
+                ? "./assets/icons/icon-dashboard-fill.svg"
+                : "./assets/icons/icon-dashboard.svg"
+            }`}
+            onClick={() => navigation("/")}
           />
           <ButtonIconSidebar
-            src="./assets/icons/icon-design.svg"
+            src={`${
+              pathname === "/design"
+                ? "./assets/icons/icon-design-fill.svg"
+                : "./assets/icons/icon-design.svg"
+            }`}
+            isActive={pathname === "/design"}
             isExpand={isActive}
             label="Design"
+            onClick={() => navigation("/design")}
           />
         </Box>
 

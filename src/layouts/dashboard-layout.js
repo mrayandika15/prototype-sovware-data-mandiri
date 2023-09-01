@@ -16,8 +16,15 @@ const DashboardLayout = ({ children }) => {
           height: "100%",
         }}
       >
-        <Navbar />
-        <Box sx={{ p: "20px", background: "#CBD5FA38", height: "100vh" }}>
+        <Navbar sidebarState={{ isActive, setIsActive }} />
+        <Box
+          sx={{
+            p: "20px",
+
+            background: "#CBD5FA38",
+            height: "100vh",
+          }}
+        >
           {children}
         </Box>
       </Box>

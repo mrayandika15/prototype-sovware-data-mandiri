@@ -11,6 +11,7 @@ const MonitorPage = () => {
         display: "flex",
         flexDirection: "column",
         gap: "25px",
+        mt: "64px",
       }}
     >
       <Searchbar />
