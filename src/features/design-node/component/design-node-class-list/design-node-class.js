@@ -1,10 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const DesignNodeClass = ({ url, label, onClick }) => {
+const DesignNodeClass = ({ url, label, onClick, onDragStart }) => {
   return (
     <Box
       onClick={onClick}
+      onDragStart={onDragStart}
+      draggable
       sx={{
         width: "100%",
 

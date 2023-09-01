@@ -8,6 +8,11 @@ const DesignNodeClassList = () => {
 
   const { setOpenProcessorList, openProcessorList } = processorListState;
 
+  const onDragStart = (event, nodeType) => {
+    event.dataTransfer.setData("application/reactflow", nodeType);
+    event.dataTransfer.effectAllowed = "move";
+  };
+
   return (
     <Box
       sx={{
@@ -29,6 +34,7 @@ const DesignNodeClassList = () => {
         label="PROCESSOR"
         url="./assets/icons/node/processor.svg"
         onClick={() => setOpenProcessorList(true)}
+        onDragStart={(event) => onDragStart(event, "processor")}
       />
       <DesignNodeClass
         label="REMOTE PROCCESS GROUP"
@@ -39,6 +45,7 @@ const DesignNodeClassList = () => {
             label: "REMOTE PROCCESS GROUP",
           })
         }
+        onDragStart={(event) => onDragStart(event, "cloud")}
       />
       <DesignNodeClass
         label="FUNNEL"
@@ -49,6 +56,7 @@ const DesignNodeClassList = () => {
             label: "FUNNEL",
           })
         }
+        onDragStart={(event) => onDragStart(event, "funnel")}
       />
     </Box>
   );

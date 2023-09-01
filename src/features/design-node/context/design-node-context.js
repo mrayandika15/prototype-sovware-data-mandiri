@@ -1,3 +1,4 @@
+import { Alert, Snackbar } from "@mui/material";
 import React, { useCallback } from "react";
 import { addEdge, useEdgesState, useNodesState } from "reactflow";
 
@@ -13,6 +14,10 @@ const DesignNodeContext = ({ children }) => {
     state: false,
   });
 
+  const [error, setError] = React.useState(false);
+
+  const [rfInstance, setRfInstance] = React.useState(null);
+
   const isValidConnection = (source, target) => {
     return true;
   };
@@ -20,6 +25,14 @@ const DesignNodeContext = ({ children }) => {
   const onConnect = useCallback(
     (params) => {
       const { source, target } = params;
+
+      const sourceFilter = source.match(/^(cloud)[A-Za-z0-9_]+$/);
+      const targetFilter = target.match(/^(cloud)[A-Za-z0-9_]+$/);
+
+      if (sourceFilter && targetFilter && sourceFilter[1] === targetFilter[1]) {
+        setError(true);
+        return;
+      }
 
       if (!isValidConnection(source, target)) {
         return;
@@ -40,10 +53,11 @@ const DesignNodeContext = ({ children }) => {
         type: type,
         data: {
           label: label,
+          type: type,
         },
         position: {
-          x: 0,
-          y: 0,
+          x: Math.random(),
+          y: Math.random(),
         },
       };
       setNodes((nds) => nds.concat(newNode));
@@ -64,9 +78,21 @@ const DesignNodeContext = ({ children }) => {
         onAdd,
         connectAction,
         setConnectAction,
+        rfInstance,
+        setRfInstance,
         processorListState: { openProcessorList, setOpenProcessorList },
       }}
     >
+      <Snackbar
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        open={error}
+        onClose={() => setError(false)}
+        message="I love snacks"
+        key="error-message"
+        autoHideDuration={6000}
+      >
+        <Alert severity="error">Cant connect beetwen cloud to cloud</Alert>
+      </Snackbar>
       {children}
     </designNode.Provider>
   );
@@ -91,6 +117,8 @@ export const useDesignNodeContetext = () => {
     onAdd,
     connectAction,
     setConnectAction,
+    rfInstance,
+    setRfInstance,
     processorListState: { openProcessorList, setOpenProcessorList },
   } = context;
 
@@ -105,6 +133,8 @@ export const useDesignNodeContetext = () => {
     onAdd,
     connectAction,
     setConnectAction,
+    rfInstance,
+    setRfInstance,
     processorListState: { openProcessorList, setOpenProcessorList },
   };
 };

@@ -48,14 +48,7 @@ const DesignActionNode = ({ open, onClose }) => {
       label: connectAction?.actionVal,
     };
 
-    if (
-      connectAction?.params?.sourceHandle &&
-      connectAction?.params?.target !== connectAction?.params?.source
-    ) {
-      setEdges((eds) => addEdge(newEdge, eds));
-    }
-
-    alert("Cant add Cloud to Cloud");
+    setEdges((eds) => addEdge(newEdge, eds));
   };
 
   return (

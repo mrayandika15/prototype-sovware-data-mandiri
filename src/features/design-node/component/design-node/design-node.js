@@ -1,5 +1,5 @@
 import { Box, Modal } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -15,6 +15,8 @@ import DesignCloud from "../design-class/design-cloud";
 import DesignFunnel from "../design-class/design-funnel";
 import DesignActionNode from "./design-action-node";
 
+const getNodeId = () => `randomnode_${+new Date()}`;
+
 const nodeTypes = {
   processorNode: DesignProcessor,
   cloudNode: DesignCloud,
@@ -24,22 +26,64 @@ const nodeTypes = {
 const DesignNode = () => {
   const {
     nodes,
-    onAdd,
     onConnect,
     onEdgesChange,
     onNodesChange,
     edges,
-    setEdges,
-    setNodes,
     setConnectAction,
     connectAction,
+    rfInstance,
+    setRfInstance,
+    setNodes,
+    processorListState: { setOpenProcessorList },
   } = useDesignNodeContetext();
 
   const connectionModal = connectAction?.state || false;
 
+  const reactFlowWrapper = useRef(null);
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData("application/reactflow");
+
+      if (typeof type === "undefined" || !type) {
+        return;
+      }
+
+      const position = rfInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+
+      if (type === "processor") {
+        setOpenProcessorList(true);
+        return;
+      }
+
+      const newNode = {
+        id: type + getNodeId(),
+        type: `${type}Node`,
+        position,
+        data: { label: type === "cloud" ? "REMOTE PROCCESS GROUP" : "FUNNEL" },
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [rfInstance]
+  );
+
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
   return (
     <Box
       sx={{ width: "100vw", height: "100vh", position: "fixed", inset: "0" }}
+      ref={reactFlowWrapper}
     >
       <ReactFlow
         nodes={nodes}
@@ -48,6 +92,10 @@ const DesignNode = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        fitView
+        onInit={setRfInstance}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
       >
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>

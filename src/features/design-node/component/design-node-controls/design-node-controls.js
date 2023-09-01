@@ -3,7 +3,7 @@ import React from "react";
 import DesignButtonControls from "./design-button-controls";
 import DesignActionControl from "./design-action-node";
 
-const DesignNodeControls = () => {
+const DesignNodeControls = ({ name }) => {
   return (
     <Box
       sx={{
@@ -17,12 +17,12 @@ const DesignNodeControls = () => {
           position: "fixed",
           bottom: 0,
           pb: "10px",
-
           width: "100%",
           display: "flex",
           gap: "10px",
           pl: "70px",
           overflow: "hidden",
+          zIndex: 1,
         }}
       >
         <DesignButtonControls>SERVICES</DesignButtonControls>
@@ -32,7 +32,6 @@ const DesignNodeControls = () => {
       <Box
         sx={{
           position: "absolute",
-
           pb: "10px",
           width: "100%",
           display: "flex",
@@ -55,7 +54,7 @@ const DesignNodeControls = () => {
               alignItems: "center",
               borderRadius: "100%",
               background: "white",
-              zIndex: 9999,
+              zIndex: 1,
             }}
           >
             <img
@@ -63,9 +62,7 @@ const DesignNodeControls = () => {
               style={{ width: "20px", height: "20px" }}
             />
           </Box>
-          <Typography sx={{ fontSize: "14px", zIndex: 999 }}>
-            s2re-agent-java
-          </Typography>
+          <Typography sx={{ fontSize: "14px", zIndex: 999 }}>{name}</Typography>
         </Box>
 
         <DesignActionControl />
